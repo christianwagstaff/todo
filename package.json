@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "webpack --watch",
-    "build": "webpack"
+    "build": "webpack",
+    "server": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -20,9 +21,14 @@
   "homepage": "https://github.com/christianwagstaff/todo#readme",
   "devDependencies": {
     "css-loader": "^6.5.1",
+    "express": "^4.17.1",
     "html-webpack-plugin": "^5.5.0",
     "style-loader": "^3.3.1",
     "webpack": "^5.64.3",
-    "webpack-cli": "^4.9.1"
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-middleware": "^5.2.2"
+  },
+  "dependencies": {
+    "date-fns": "^2.26.0"
   }
 }
