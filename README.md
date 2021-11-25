@@ -1,0 +1,1 @@
+A TODO List where users can create items, set priorities, mark as completed, delete and create custom projects to group items together.
