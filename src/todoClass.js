@@ -33,3 +33,5 @@ class Todo {
         this.completedDate = date;
     }
 }
+
+export default Todo;

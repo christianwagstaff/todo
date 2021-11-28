@@ -1,0 +1,32 @@
+{
+    "todos" : [
+        {
+            "title": "TODO 1",
+            "description": "Description 1",
+            "dueDate": "02/23/21",
+            "priority": "1",
+            "project": "default",
+            "completed": "false"
+        }, 
+        {
+            "title": "TODO 2",
+            "description": "Description 2",
+            "dueDate": "02/23/21",
+            "priority": "2",
+            "project": "default",
+            "completed": "false"
+        },
+        {
+            "title": "TODO 3",
+            "description": "Description 3",
+            "dueDate": "02/23/21",
+            "priority": "3",
+            "project": "default",
+            "completed": "false"
+        }
+    ], 
+    "projects": [
+        "default",
+        "proj1"
+    ]
+}
