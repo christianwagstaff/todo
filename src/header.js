@@ -1,4 +1,4 @@
-import { createDomElement } from "./template";
+import { createDomElement } from "./tools";
 
 const Header = (function() {
     function createHeader() {

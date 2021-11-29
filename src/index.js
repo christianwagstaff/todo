@@ -1,15 +1,18 @@
+require('./style-reset.css');
+require('./style.css');
+
 import {userTodoList} from './todoList.js';
 import {createListFromClass} from './todoJSON.js';
 import {populateStorage, getStorage} from './localStorage.js';
-import { createDomElement } from './template';
-import {removeChildren} from './tools.js';
+import { createDomElement, removeChildren } from './tools.js';
 import Header from './header.js';
+import createTodoNavBar from './todoProjects.js';
 
 //add Header to page
 document.body.appendChild(Header.createHeader());
 
 //create main section in body to attach the main info to
-let content = createDomElement("div", 'main');
+let content = createDomElement("main", 'main');
 document.body.appendChild(content);
 
 //cache DOM
@@ -24,4 +27,5 @@ function changeTodos(item) {
     main.appendChild(newTodo);
 }
 
+main.appendChild(createTodoNavBar());
 main.appendChild(userTodoList.renderTodos(myTodos));

@@ -1,14 +1,13 @@
 import { populateStorage, getStorage } from './localStorage.js';
-import { createDomElement } from './template.js';
+import { createDomElement } from './tools.js';
 import Todo from './todoClass.js';
 import { createListFromClass } from './todoJSON.js';
 
 const userTodoList = (function() {
     let myTodos = createListFromClass(getStorage('todos'));
-    // let myProjects = getStorage('projects')
 
     function createTodoItem(item) {
-        let container = createDomElement('div', 'todo');
+        let container = createDomElement('div', 'todo rounded');
         container.appendChild(createDomElement('h2', 'todoTitle', item.title));
         container.appendChild(createDomElement('p', 'todoDesc', item.description));
         container.appendChild(createDomElement('p', 'todoDueDate', item.dueDate));
@@ -20,6 +19,7 @@ const userTodoList = (function() {
         for (let item of list) {
             container.appendChild(createTodoItem(item));
         }
+        container.appendChild(createDomElement('div', 'todo newTodo rounded', 'New Todo Item'));
         return container;
     }
     

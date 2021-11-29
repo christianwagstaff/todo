@@ -1,0 +1,74 @@
+:root {
+    --todo-gap: 12px;
+    --clr-primary: #15CAFD;
+    --clr-secondary: #D4F6FF;
+    --clr-new: #bdf1ff;
+}
+/* Styling for TODO List */
+body {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    min-height: 100vh;
+}
+
+header {
+    width: 100%;
+    background-color: var(--clr-primary);
+    height: 15vh;
+    display: flex;
+    align-items: center;
+}
+
+main {
+    flex-grow: 1;
+    display: flex;
+}
+
+nav, nav div, .todoList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--todo-gap);
+}
+
+nav {
+    background-color: var(--clr-secondary);
+}
+
+header, nav, .todoList {
+    padding: var(--todo-gap)
+}
+
+.newProjectBtn::before, .newTodo::before {
+    content: '+';
+}
+.newProjectBtn {
+    display: flex;
+    gap: .5em;
+    align-items: center;
+}
+
+.todoList {
+    flex-grow: 1;
+}
+
+.todo {
+    display: flex;
+    gap: var(--todo-gap);
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid black;
+    padding: 4px 8px;
+    width: 100%;
+    pointer-events: none;
+}
+
+
+.newTodo {
+    justify-content: flex-start;
+    background-color: var(--clr-new);
+}
+
+.rounded {
+    border-radius: 5px;;
+}
