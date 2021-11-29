@@ -4,9 +4,10 @@ import Todo from './todoClass.js';
 import { createListFromClass } from './todoJSON.js';
 
 const userTodoList = (function() {
-    let myTodos = createListFromClass(getStorage());
+    let myTodos = createListFromClass(getStorage('todos'));
+    // let myProjects = getStorage('projects')
 
-    function createContentFromClass(item) {
+    function createTodoItem(item) {
         let container = createDomElement('div', 'todo');
         container.appendChild(createDomElement('h2', 'todoTitle', item.title));
         container.appendChild(createDomElement('p', 'todoDesc', item.description));
@@ -17,7 +18,7 @@ const userTodoList = (function() {
     function renderTodos(list) {
         let container = createDomElement('div', 'todoList');
         for (let item of list) {
-            container.appendChild(createContentFromClass(item));
+            container.appendChild(createTodoItem(item));
         }
         return container;
     }
@@ -25,7 +26,6 @@ const userTodoList = (function() {
     function addTodo(item) {
         let todoItem = new Todo(item);
         myTodos.push(todoItem);
-        console.log(myTodos)
         populateStorage(myTodos);
         return renderTodos(myTodos);
     }

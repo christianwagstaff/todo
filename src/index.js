@@ -1,24 +1,22 @@
-import data from './testTodo.json';
 import {userTodoList} from './todoList.js';
 import {createListFromClass} from './todoJSON.js';
 import {populateStorage, getStorage} from './localStorage.js';
 import { createDomElement } from './template';
+import {removeChildren} from './tools.js';
+import Header from './header.js';
 
-//send data to localStorage
-populateStorage(data.todos);
-let myTodos = createListFromClass(getStorage());
+//add Header to page
+document.body.appendChild(Header.createHeader());
 
-
+//create main section in body to attach the main info to
 let content = createDomElement("div", 'main');
-content.appendChild(userTodoList.renderTodos(myTodos));
-
 document.body.appendChild(content);
 
 //cache DOM
 const main = document.querySelector('.main');
 
-let userTodo = prompt('What do you want?');
-changeTodos(userTodo)
+//get data to localStorage
+let myTodos = createListFromClass(getStorage('todos'));
 
 function changeTodos(item) {
     removeChildren(main);
@@ -26,8 +24,4 @@ function changeTodos(item) {
     main.appendChild(newTodo);
 }
 
-function removeChildren(parent) {
-    while (parent.firstChild) {
-        parent.removeChild(parent.lastChild);
-    }
-}
+main.appendChild(userTodoList.renderTodos(myTodos));
