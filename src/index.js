@@ -2,8 +2,6 @@ require('./style-reset.css');
 require('./style.css');
 
 import {userTodoList} from './todoList.js';
-import {createListFromClass} from './todoJSON.js';
-import {populateStorage, getStorage} from './localStorage.js';
 import { createDomElement, removeChildren } from './tools.js';
 import Header from './header.js';
 import todoProjects from './todoProjects.js';
@@ -25,18 +23,25 @@ document.body.appendChild(content);
 const main = document.querySelector('.main');
 
 //get data to localStorage
-let myTodos = createListFromClass(getStorage('todos'));
+let myTodos = 'Project 1';
 
 //create Todo App
 main.appendChild(todoProjects.createTodoNavBar());
-main.appendChild(userTodoList.renderTodos(myTodos));
+main.appendChild(createDomElement('div', 'todos'));
 
 //cache Todo App
 const navBar = document.querySelector('nav');
 const addProject = navBar.querySelectorAll('.newUserProject');
+const userProjects = navBar.querySelectorAll('.userProject');
+const todoList = document.querySelector('.todos');
 
 //add Event Listeners
 addProject.forEach(x => x.addEventListener('click', newUserProject));
+userProjects.forEach(x => x.addEventListener('click', changeProject));
+
+//render initial todolist
+todoList.appendChild(userTodoList.renderTodos(myTodos));
+
 
 function changeTodos(item) {
     removeChildren(main);
@@ -47,4 +52,10 @@ function changeTodos(item) {
 function newUserProject() {
     let newProject = prompt('New Project');
     todoProjects.updateUserProjects(newProject);
+}
+
+function changeProject(e) {
+    let project = e.target.textContent;
+    todoList.removeChild(todoList.firstChild)
+    todoList.appendChild(userTodoList.renderTodos(project))
 }

@@ -12,8 +12,10 @@ function createTodoFromJSON(jsonData) {
 
 function createListFromClass(data) {
     let todoList = [];
-    for (let item of data) {
-        todoList.push(createTodoFromJSON(item));
+    if (data) {
+        for (let item of data) {
+            todoList.push(createTodoFromJSON(item));
+        }
     }
     return todoList;
 }

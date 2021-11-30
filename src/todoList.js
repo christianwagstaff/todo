@@ -5,7 +5,7 @@ import { createListFromClass } from './todoJSON.js';
 import { getIcon } from './todoIcons.js';
 
 const userTodoList = (function() {
-    let myTodos = createListFromClass(getStorage('todos'));
+    let myTodos = createListFromClass(getStorage('default'));
 
     function createTodoItem(item) {
         let icon = getIcon('circle');
@@ -33,9 +33,12 @@ const userTodoList = (function() {
     }
     
     function renderTodos(list) {
+        list = createListFromClass(getStorage(list));
         let container = createDomElement('div', 'todoList');
-        for (let item of list) {
-            container.appendChild(createTodoItem(item));
+        if (list) {
+            for (let item of list) {
+                container.appendChild(createTodoItem(item));
+            }
         }
         container.appendChild(newTodoItem());
         return container;

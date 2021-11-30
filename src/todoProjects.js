@@ -1,18 +1,16 @@
-import { getStorage, populateStorage } from "./localStorage";
+import { addNewProject, getProjects, getStorage, populateStorage } from "./localStorage";
 import { createDomElement } from "./tools";
 
 let todoProjects = (function() {
     function updateUserProjects(newProject) {
         //if the user cancels or inputs a blank name, return nothing.
         if (!/\S/.test(newProject)|| !newProject) return;
-        let currentProjects = getStorage('projects');
         newProject = newProject.trim()
-        currentProjects.push(newProject);
-        populateStorage('projects', currentProjects);
+        addNewProject(newProject);
     }
 
     function createTodoNavBar() {
-        let myProjects = getStorage('projects');
+        let myProjects = getProjects();
         let container = createDomElement('nav', 'nav')
         container.appendChild(createNavHeader());
         container.appendChild(createUserProjects(myProjects));
@@ -51,8 +49,10 @@ let todoProjects = (function() {
     function createUserProjects(list) {
         let container = createDomElement('div', 'userProjectList projectList');
         container.appendChild(createUserProjectHeader());
-        for (let item of list) {
-            container.appendChild(createDomElement('button', `project userProject`, item));
+        if (list) {
+            for (let item of list) {
+                container.appendChild(createDomElement('button', `project userProject`, item));
+            }
         }
         container.appendChild(createNewProjectButton());
         return container;

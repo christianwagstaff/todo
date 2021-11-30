@@ -105,6 +105,10 @@ nav {
 
 /* Todo List */
 
+.todos {
+    flex-grow: 1;
+}
+
 .todoList {
     flex-grow: 1;
     gap: var(--todo-gap)
