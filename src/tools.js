@@ -18,4 +18,9 @@ function createDomElement(userType, userClass = '', content = '') {
     return container;
 }
 
-export {createDomElement, removeChildren};
+function createIcon(icon) {
+    let container = createDomElement('i', icon);
+    return container
+}
+
+export {createDomElement, removeChildren, createIcon};

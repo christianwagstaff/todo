@@ -10,11 +10,11 @@ function createTodoNavBar() {
 }
 
 function createNavHeader() {
-    let container = createDomElement('div', 'navHeader')
-    let homeBtn = createDomElement('button', 'homePageBtn', 'Home');
-    let thisWeekBtn = createDomElement('button', 'thisWeekBtn', 'This Week');
-    let pastDueBtn = createDomElement('button', 'pastDueBtn', 'Past Due');
-    let completedBtn = createDomElement('button', 'completedBtn', 'Completed');
+    let container = createDomElement('div', 'navHeader projectList')
+    let homeBtn = createDomElement('button', 'project homePageBtn', 'Home');
+    let thisWeekBtn = createDomElement('button', 'project thisWeekBtn', 'This Week');
+    let pastDueBtn = createDomElement('button', 'project pastDueBtn', 'Past Due');
+    let completedBtn = createDomElement('button', 'project completedBtn', 'Completed');
     container.appendChild(homeBtn);
     container.appendChild(thisWeekBtn);
     container.appendChild(pastDueBtn);
@@ -22,12 +22,29 @@ function createNavHeader() {
     return container;
 }
 
+function createUserProjectHeader() {
+    let container = createDomElement('div', 'userProjectHeader')
+    let title = document.createElement('h2')
+    title.textContent = 'Projects';
+    let addBtn = createDomElement('button', 'newUserProject', '+');
+    container.appendChild(title);
+    container.appendChild(addBtn);
+    return container;
+}
+
+function createNewProjectButton() {
+    let container = createDomElement('button', 'newUserProject project')
+    container.textContent = '+ Add Project'
+    return container;
+}
+
 function createUserProjects(list) {
-    let container = createDomElement('div', 'userProjects', 'Projects');
+    let container = createDomElement('div', 'userProjectList projectList');
+    container.appendChild(createUserProjectHeader());
     for (let item of list) {
-        container.appendChild(createDomElement('button', `${item}Btn`, item));
+        container.appendChild(createDomElement('button', `project userProject`, item));
     }
-    container.appendChild(createDomElement('button', 'newProjectBtn', 'Add Project'))
+    container.appendChild(createNewProjectButton());
     return container;
 }
 

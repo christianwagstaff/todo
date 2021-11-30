@@ -1,23 +1,28 @@
 :root {
     --todo-gap: 12px;
+    --nav-padding: 6px;
     --clr-primary: #15CAFD;
     --clr-secondary: #D4F6FF;
+    --clr-secondary-hover: #ffffff;
     --clr-new: #bdf1ff;
 }
-/* Styling for TODO List */
+
 body {
     display: flex;
     flex-direction: column;
     width: 100vw;
     min-height: 100vh;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
 }
 
 header {
     width: 100%;
     background-color: var(--clr-primary);
-    height: 15vh;
+    height: 10vh;
     display: flex;
     align-items: center;
+    font-size: 2rem;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 main {
@@ -28,47 +33,108 @@ main {
 nav, nav div, .todoList {
     display: flex;
     flex-direction: column;
-    gap: var(--todo-gap);
 }
 
 nav {
     background-color: var(--clr-secondary);
+    width: 25vw;
 }
 
-header, nav, .todoList {
+header, .todoList {
     padding: var(--todo-gap)
-}
-
-.newProjectBtn::before, .newTodo::before {
-    content: '+';
-}
-.newProjectBtn {
-    display: flex;
-    gap: .5em;
-    align-items: center;
-}
-
-.todoList {
-    flex-grow: 1;
-}
-
-.todo {
-    display: flex;
-    gap: var(--todo-gap);
-    align-items: center;
-    justify-content: space-between;
-    border: 1px solid black;
-    padding: 4px 8px;
-    width: 100%;
-    pointer-events: none;
-}
-
-
-.newTodo {
-    justify-content: flex-start;
-    background-color: var(--clr-new);
 }
 
 .rounded {
     border-radius: 5px;;
+}
+
+nav {
+    padding-top: var(--todo-gap);
+    padding-left: var(--todo-gap);
+}
+
+/* Project List */
+.projectList {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.project {
+    border: none;
+    background-color: inherit;
+    font-size: 1rem;
+    width: 100%;
+    text-align: start;
+    padding-top: var(--nav-padding);
+    padding-bottom: var(--nav-padding);
+}
+
+.project:hover, .active {
+    background-color: var(--clr-secondary-hover);
+    font-weight: 600;
+}
+.userProjectHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.userProjectHeader::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: var(--clr-primary);
+}
+
+.userProjectHeader button {
+    width: 2rem;
+    border: none;
+    background-color: inherit;
+    font-weight: 100;
+    font-size: 1rem;
+}
+
+/* Todo List */
+
+.todoList {
+    flex-grow: 1;
+    gap: var(--todo-gap)
+}
+
+.todo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--todo-gap);
+    border: 1px solid black;
+    padding: 4px 8px;
+    width: 100%;
+    cursor: default;
+}
+
+.todoTop {
+    display: flex;
+    justify-content: space-between;
+}
+
+.newTodo {
+    flex-direction: row;
+    justify-content: flex-start;
+    background-color: var(--clr-new);
+    cursor: default;
+}
+
+.newTodo::before {
+    content: '+';
+}
+
+.newTodo:hover {
+    background-color: #00b0e0;
 }

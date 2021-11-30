@@ -2,15 +2,22 @@ import { populateStorage, getStorage } from './localStorage.js';
 import { createDomElement } from './tools.js';
 import Todo from './todoClass.js';
 import { createListFromClass } from './todoJSON.js';
+import { getIcon } from './todoIcons.js';
 
 const userTodoList = (function() {
     let myTodos = createListFromClass(getStorage('todos'));
 
     function createTodoItem(item) {
+        let icon = getIcon('fas fa-check');
         let container = createDomElement('div', 'todo rounded');
-        container.appendChild(createDomElement('h2', 'todoTitle', item.title));
-        container.appendChild(createDomElement('p', 'todoDesc', item.description));
-        container.appendChild(createDomElement('p', 'todoDueDate', item.dueDate));
+        let top = createDomElement('div', 'todoTop');
+        let bottom = document.createElement('div');
+        top.appendChild(createDomElement('h2', 'todoTitle', item.title));
+        top.appendChild(createDomElement('p', 'todoDueDate', item.dueDate));
+        bottom.appendChild(createDomElement('p', 'todoDesc', item.description));
+        container.appendChild(icon);
+        container.appendChild(top);
+        container.appendChild(bottom);
         return container;
     }
     
