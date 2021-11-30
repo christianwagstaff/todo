@@ -111,7 +111,6 @@ nav {
 
 .todo {
     display: flex;
-    flex-direction: column;
     gap: var(--todo-gap);
     border: 1px solid black;
     padding: 4px 8px;
@@ -119,9 +118,24 @@ nav {
     cursor: default;
 }
 
+.todo i {
+    width: 1.3rem;
+    cursor: pointer;
+}
+
+.todoContent {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
 .todoTop {
     display: flex;
     justify-content: space-between;
+}
+
+.todoBottom {
+    font-size: 0.8rem;
 }
 
 .newTodo {

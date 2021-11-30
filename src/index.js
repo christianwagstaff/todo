@@ -29,3 +29,8 @@ function changeTodos(item) {
 
 main.appendChild(createTodoNavBar());
 main.appendChild(userTodoList.renderTodos(myTodos));
+
+let script = document.createElement('script');
+script.src = 'https://kit.fontawesome.com/affeb91e0c.js';
+script.crossOrigin = 'anonymous'
+document.head.appendChild(script);

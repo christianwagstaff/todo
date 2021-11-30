@@ -8,16 +8,18 @@ const userTodoList = (function() {
     let myTodos = createListFromClass(getStorage('todos'));
 
     function createTodoItem(item) {
-        let icon = getIcon('fas fa-check');
+        let icon = getIcon('circle');
         let container = createDomElement('div', 'todo rounded');
+        let content = createDomElement('div', 'todoContent')
         let top = createDomElement('div', 'todoTop');
-        let bottom = document.createElement('div');
+        let bottom = createDomElement('div', 'todoBottom');
         top.appendChild(createDomElement('h2', 'todoTitle', item.title));
         top.appendChild(createDomElement('p', 'todoDueDate', item.dueDate));
         bottom.appendChild(createDomElement('p', 'todoDesc', item.description));
+        content.appendChild(top);
+        content.appendChild(bottom);
         container.appendChild(icon);
-        container.appendChild(top);
-        container.appendChild(bottom);
+        container.appendChild(content);
         return container;
     }
     
