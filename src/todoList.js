@@ -22,13 +22,22 @@ const userTodoList = (function() {
         container.appendChild(content);
         return container;
     }
+
+    function newTodoItem() {
+        let icon = getIcon('plus');
+        let content = createDomElement('div', '', 'Add Task')
+        let container = createDomElement('div', 'todo newTodo rounded')
+        container.appendChild(icon);
+        container.appendChild(content);
+        return container;
+    }
     
     function renderTodos(list) {
         let container = createDomElement('div', 'todoList');
         for (let item of list) {
             container.appendChild(createTodoItem(item));
         }
-        container.appendChild(createDomElement('div', 'todo newTodo rounded', 'New Todo Item'));
+        container.appendChild(newTodoItem());
         return container;
     }
     

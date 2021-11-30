@@ -63,6 +63,7 @@ nav {
 .project {
     border: none;
     background-color: inherit;
+    margin: 0;
     font-size: 1rem;
     width: 100%;
     text-align: start;
@@ -111,6 +112,7 @@ nav {
 
 .todo {
     display: flex;
+    align-items: flex-start;
     gap: var(--todo-gap);
     border: 1px solid black;
     padding: 4px 8px;
@@ -143,10 +145,6 @@ nav {
     justify-content: flex-start;
     background-color: var(--clr-new);
     cursor: default;
-}
-
-.newTodo::before {
-    content: '+';
 }
 
 .newTodo:hover {

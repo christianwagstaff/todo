@@ -1,7 +1,7 @@
 import data from './testTodo.json';
 
-function populateStorage(todoList) {
-    localStorage.setItem('todos', JSON.stringify(todoList));
+function populateStorage(choice, list) {
+    localStorage.setItem(choice, JSON.stringify(list));
     console.log(localStorage)
 }
 function getStorage(choice) {
