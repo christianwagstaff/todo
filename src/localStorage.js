@@ -33,7 +33,6 @@ function getStorage(choice) {
         }
     }
     let items = localStorage.getItem(choice);
-    console.log(`Local Storage: ${choice}`)
     if (!items) {
         return;
     }

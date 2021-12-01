@@ -1,4 +1,4 @@
-import { addNewProject, getProjects, getStorage, populateStorage } from "./localStorage";
+import { addNewProject, getProjects } from "./localStorage";
 import { createDomElement } from "./tools";
 
 let todoProjects = (function() {
@@ -10,19 +10,18 @@ let todoProjects = (function() {
     }
 
     function createTodoNavBar() {
-        let myProjects = getProjects();
         let container = createDomElement('nav', 'nav')
         container.appendChild(createNavHeader());
-        container.appendChild(createUserProjects(myProjects));
+        container.appendChild(createUserProjects());
         return container
     }
 
     function createNavHeader() {
         let container = createDomElement('div', 'navHeader projectList')
-        let homeBtn = createDomElement('button', 'project homePageBtn active', 'Home');
-        let thisWeekBtn = createDomElement('button', 'project thisWeekBtn', 'This Week');
-        let pastDueBtn = createDomElement('button', 'project pastDueBtn', 'Past Due');
-        let completedBtn = createDomElement('button', 'project completedBtn', 'Completed');
+        let homeBtn = createDomElement('button', 'project homePageBtn active navProject', 'Home');
+        let thisWeekBtn = createDomElement('button', 'project thisWeekBtn navProject', 'This Week');
+        let pastDueBtn = createDomElement('button', 'project pastDueBtn navProject', 'Past Due');
+        let completedBtn = createDomElement('button', 'project completedBtn navProject', 'Completed');
         container.appendChild(homeBtn);
         container.appendChild(thisWeekBtn);
         container.appendChild(pastDueBtn);
@@ -46,21 +45,29 @@ let todoProjects = (function() {
         return container;
     }
 
-    function createUserProjects(list) {
-        let container = createDomElement('div', 'userProjectList projectList');
+    function createUserProjects() {
+        let container = createDomElement('div', 'userProjects projectList');
         container.appendChild(createUserProjectHeader());
-        if (list) {
-            for (let item of list) {
-                container.appendChild(createDomElement('button', `project userProject`, item));
-            }
-        }
+        container.appendChild(createUserProjectList());
         container.appendChild(createNewProjectButton());
         return container;
+    }
+
+    function createUserProjectList() {
+        let content = createDomElement('div', 'userProjectList')
+        let list = getProjects()
+        if (list) {
+            for (let item of list) {
+                content.appendChild(createDomElement('button', `project userProject`, item));
+            }
+        }
+        return content        
     }
 
     return {
         createTodoNavBar: createTodoNavBar,
         updateUserProjects: updateUserProjects,
+        createUserProjectList: createUserProjectList,
     }
 })();
 

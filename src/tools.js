@@ -23,4 +23,8 @@ function createIcon(icon) {
     return container
 }
 
-export {createDomElement, removeChildren, createIcon};
+function createFormInput() {
+
+}
+
+export {createDomElement, removeChildren, createIcon, createFormInput};

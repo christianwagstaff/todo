@@ -10,7 +10,17 @@ function createTodoFromJSON(jsonData) {
     return todo;
 }
 
-function createListFromClass(data) {
+function createTodoFromDOM(array, project) {
+    let todo = new Todo(
+        array[0],
+        array[1],
+        array[2],
+        array[3]);
+    todo.project = project;
+    return todo;
+}
+
+function createListFromJSON(data) {
     let todoList = [];
     if (data) {
         for (let item of data) {
@@ -20,4 +30,4 @@ function createListFromClass(data) {
     return todoList;
 }
 
-export {createListFromClass};
+export {createListFromJSON, createTodoFromDOM};

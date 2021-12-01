@@ -1,11 +1,11 @@
 import { populateStorage, getStorage } from './localStorage.js';
 import { createDomElement } from './tools.js';
 import Todo from './todoClass.js';
-import { createListFromClass } from './todoJSON.js';
+import { createListFromJSON, createTodoFromDOM } from './todoJSON.js';
 import { getIcon } from './todoIcons.js';
 
 const userTodoList = (function() {
-    let myTodos = createListFromClass(getStorage('default'));
+    let myTodos = createListFromJSON(getStorage('default'));
 
     function createTodoItem(item) {
         let icon = getIcon('circle');
@@ -23,7 +23,7 @@ const userTodoList = (function() {
         return container;
     }
 
-    function newTodoItem() {
+    function newTodoButton() {
         let icon = getIcon('plus');
         let content = createDomElement('div', '', 'Add Task')
         let container = createDomElement('div', 'todo newTodo rounded')
@@ -33,26 +33,27 @@ const userTodoList = (function() {
     }
     
     function renderTodos(list) {
-        list = createListFromClass(getStorage(list));
+        list = createListFromJSON(getStorage(list));
         let container = createDomElement('div', 'todoList');
         if (list) {
             for (let item of list) {
                 container.appendChild(createTodoItem(item));
             }
         }
-        container.appendChild(newTodoItem());
+        container.appendChild(newTodoButton());
         return container;
     }
     
-    function addTodo(item) {
-        let todoItem = new Todo(item);
-        myTodos.push(todoItem);
-        populateStorage(myTodos);
+    function createNewTodo(itemArray, project) {
+        let todoItem = createTodoFromDOM(itemArray, project);
+        let selectedProject = createListFromJSON(getStorage(project));
+        selectedProject.push(todoItem);
+        populateStorage(selectedProject, project);
         return renderTodos(myTodos);
     }
 
     return {
-        addTodo: addTodo,
+        addTodo: createNewTodo,
         renderTodos: renderTodos,
     }
 })();

@@ -103,6 +103,10 @@ nav {
     font-size: 1rem;
 }
 
+.userProjectList {
+    width: 100%;
+}
+
 /* Todo List */
 
 .todos {
