@@ -40,11 +40,19 @@ function getStorage(choice) {
     return JSON.parse(items)
 }
 
+function changeProjectName(newProjectName, oldProjectName) {
+    let info = getStorage(oldProjectName);
+    populateStorage(newProjectName, info);
+    localStorage.removeItem(oldProjectName);
+}
+
 function getProjects() {
     let defaultKeys = Object.keys(data)
     if (!localStorage[defaultKeys[0]]) {
         for (let i of defaultKeys) {
-            populateStorage(i, data[i])
+            if (i !== 'userPreferences') {
+                populateStorage(i, data[i])
+            }
         }
     }
     return Object.keys(localStorage).reverse();
@@ -58,4 +66,4 @@ function addNewProject(project) {
     localStorage.setItem(project, '[]');
 }
 
-export {populateStorage, getStorage, getProjects, addNewProject};
+export {populateStorage, getStorage, getProjects, addNewProject, changeProjectName};

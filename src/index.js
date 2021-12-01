@@ -25,9 +25,6 @@ document.body.appendChild(content);
 //cache main
 const main = document.querySelector('.main');
 
-//initialize data from localStorage
-let myTodos = 'all';
-
 //create Todo App
 main.appendChild(todoProjects.createTodoNavBar());
 main.appendChild(createDomElement('div', 'todos'));
@@ -39,15 +36,21 @@ const navProject = navBar.querySelectorAll('.navProject')
 const addProject = navBar.querySelectorAll('.newUserProject');
 const userProjects = navBar.querySelector('.userProjects');
 const todoList = document.querySelector('.todos');
+const thisWeekBtn = navBar.querySelector('.thisWeekBtn');
+const pastDueBtn = navBar.querySelector('.pastDueBtn');
+const completedBtn = navBar.querySelector('.completedBtn');
 
 //render initial todolist
-todoList.appendChild(userTodoList.renderTodos(myTodos));
+todoList.appendChild(userTodoList.renderTodos('all'));
 
 //add Event Listeners
 addProject.forEach(x => x.addEventListener('click', newUserProject));
 navProject.forEach(x => x.addEventListener('click', changeNav));
 userProjects.addEventListener('click', changeProject);
 todoList.addEventListener('click', newTodo);
+thisWeekBtn.addEventListener('click', displayThisWeek);
+pastDueBtn.addEventListener('click', displayPastDue);
+completedBtn.addEventListener('click', displayCompleted);
 
 function newUserProject() {
     let newProject = prompt('New Project');
@@ -89,10 +92,15 @@ function updateProjectList() {
 
 function newTodo(e) {
     if (eventDelegation(e, 'DIV', 'newTodo')) {
-        let title = prompt('title');
-        let desc = prompt('desc');
-        let date = parseISO(new Date());
-        console.log(date);
+        let title = prompt('Todo Title');
+        if (title === '' || !title) {
+            return;
+        }
+        let desc = prompt('Todo Description');
+        if (desc === '' || !desc) {
+            return;
+        }
+        let date = '2021-10-10';
         let priority = 1;
         let project;
         if (userProjects.querySelector('.active')) {
@@ -101,6 +109,28 @@ function newTodo(e) {
             project = 'default'
         }
         let array = [title, desc, date, priority]
-        // console.log(userTodoList.createNewTodo(array, project));
+        userTodoList.createNewTodo(array, project);
+        let currentSelection = navBar.querySelector('.active').textContent
+        console.log(currentSelection);
+        if (currentSelection === 'Home') {
+            updateTodoList('all');
+        } else {
+            updateTodoList(currentSelection);
+        }
     }
+}
+
+function displayThisWeek() {
+    todoList.removeChild(todoList.firstChild)
+    todoList.appendChild(userTodoList.renderTodosByDate('thisWeek'));
+}
+
+function displayPastDue() {
+    todoList.removeChild(todoList.firstChild)
+    todoList.appendChild(userTodoList.renderTodosByDate('pastDue'));
+}
+
+function displayCompleted() {
+    todoList.removeChild(todoList.firstChild)
+    todoList.appendChild(userTodoList.renderTodosByDate('completed'));
 }

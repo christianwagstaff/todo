@@ -2,7 +2,7 @@ import { populateStorage, getStorage } from './localStorage.js';
 import { createDomElement } from './tools.js';
 import { createListFromJSON, createTodoFromDOM } from './todoJSON.js';
 import { getIcon } from './todoIcons.js';
-import { format } from 'date-fns';
+import { format, formatDistanceToNow, formatDistanceToNowStrict, isAfter, isSameWeek } from 'date-fns';
 
 const userTodoList = (function() {
     function createTodoItem(item) {
@@ -47,12 +47,40 @@ const userTodoList = (function() {
         let selectedProject = createListFromJSON(getStorage(project));
         selectedProject.push(todoItem);
         populateStorage(project, selectedProject);
-        return renderTodos(project);
+    }
+
+    function renderTodosByDate(timeFrame) {
+        let fullList = createListFromJSON(getStorage('all'))
+        let partialList = createDomElement('div', 'todoList');
+        if (fullList) {
+            for (let item of fullList) {
+                if (timeFrame === 'thisWeek') {
+                    if (isSameWeek(new Date(), item.dueDate)) {
+                        partialList.appendChild(createTodoItem(item));
+                    }
+                } else if (timeFrame === 'pastDue') {
+                    if (isAfter(new Date(), item.dueDate)) {
+                        partialList.appendChild(createTodoItem(item));
+                    }
+                } else if (timeFrame === 'completed') {
+                    if (item.completed) {
+                        partialList.appendChild(createTodoItem(item));
+                    }
+                    if (!partialList.firstChild) {
+                        partialList.appendChild(createDomElement('div', 'todo rounded', 'No Tasks Completed!'));
+                    }
+                    return partialList;
+                }
+            }
+        }
+        partialList.appendChild(newTodoButton());
+        return partialList;
     }
 
     return {
         createNewTodo: createNewTodo,
         renderTodos: renderTodos,
+        renderTodosByDate: renderTodosByDate,
     }
 })();
 
