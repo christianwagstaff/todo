@@ -1,5 +1,6 @@
 import { addNewProject, getProjects } from "./localStorage";
 import { createDomElement } from "./tools";
+import {getIcon} from './todoIcons.js'
 
 let todoProjects = (function() {
     function updateUserProjects(newProject) {
@@ -58,7 +59,12 @@ let todoProjects = (function() {
         let list = getProjects()
         if (list) {
             for (let item of list) {
-                content.appendChild(createDomElement('button', `project userProject`, item));
+                let project = createDomElement('button', `project userProject`, item);
+                let deleteDiv = createDomElement('div', 'deleteProject');
+                let deleteIcon = getIcon('trash')
+                deleteDiv.appendChild(deleteIcon);
+                project.appendChild(deleteDiv)
+                content.appendChild(project)
             }
         }
         return content        

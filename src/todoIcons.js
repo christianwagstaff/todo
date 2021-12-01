@@ -5,6 +5,7 @@ let icons = {
     "plus" : "fas fa-plus",
     "checked" : "far fa-check-circle",
     "cog" : "far fa-cog",
+    "trash" : "far fa-trash-alt"
 }
 
 function getIcon(userIcon) {

@@ -18,6 +18,9 @@ const userTodoList = (function() {
         content.appendChild(bottom);
         container.appendChild(icon);
         container.appendChild(content);
+        let deleteIcon = getIcon('trash')
+        deleteIcon.classList.add('deleteTodo');
+        container.appendChild(deleteIcon)
         return container;
     }
 

@@ -108,6 +108,23 @@ nav {
     width: 100%;
 }
 
+.userProject {
+    display: flex;
+    justify-content: space-between;
+}
+
+.deleteProject {
+    display: none;
+}
+
+.userProject:hover .deleteProject {
+    display: flex;
+}
+
+.deleteProject i {
+    pointer-events: none;
+}
+
 /* Todo List */
 
 .todos {

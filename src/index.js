@@ -47,6 +47,7 @@ todoList.appendChild(userTodoList.renderTodos('all'));
 addProject.forEach(x => x.addEventListener('click', newUserProject));
 navProject.forEach(x => x.addEventListener('click', changeNav));
 userProjects.addEventListener('click', changeProject);
+userProjects.addEventListener('click', deleteProject)
 todoList.addEventListener('click', newTodo);
 thisWeekBtn.addEventListener('click', displayThisWeek);
 pastDueBtn.addEventListener('click', displayPastDue);
@@ -54,6 +55,9 @@ completedBtn.addEventListener('click', displayCompleted);
 
 function newUserProject() {
     let newProject = prompt('New Project');
+    if (newProject === '' || !newProject) {
+        return;
+    }
     todoProjects.updateUserProjects(newProject);
     updateProjectList();
 }
@@ -133,4 +137,11 @@ function displayPastDue() {
 function displayCompleted() {
     todoList.removeChild(todoList.firstChild)
     todoList.appendChild(userTodoList.renderTodosByDate('completed'));
+}
+
+function deleteProject(e) {
+    if (eventDelegation(e, 'DIV', 'deleteProject')) {
+        let parent = e.target.parentNode
+        alert(`Do you want to delete ${parent.textContent}?`)
+    }
 }
