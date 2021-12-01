@@ -4,6 +4,7 @@ let testing = true;
 function populateStorage(choice, list) {
     //if the list is empty do nothing
     if (!list) return;
+    console.log('Saving Storage')
     localStorage.setItem(choice, JSON.stringify(list));
 }
 
@@ -26,12 +27,12 @@ function getStorage(choice) {
         }
         return list
     }
-    if (testing) {
-        let projects = getProjects();
-        for (let i of projects) {
-            populateStorage(i, data[i]);
-        }
-    }
+    // if (testing) {
+    //     let projects = getProjects();
+    //     for (let i of projects) {
+    //         populateStorage(i, data[i]);
+    //     }
+    // }
     let items = localStorage.getItem(choice);
     if (!items) {
         return;

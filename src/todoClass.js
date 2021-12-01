@@ -1,8 +1,10 @@
+import {parseISO} from 'date-fns';
+
 class Todo {
     constructor(title, description, dueDate, priority) {
         this.title = title,
         this.description = description, 
-        this.dueDate = dueDate,
+        this.dueDate = parseISO(dueDate) ? parseISO(dueDate) : dueDate,
         this.priority = priority
         this.project = 'default';
         this.completed = false;

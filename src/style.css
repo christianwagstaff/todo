@@ -155,6 +155,23 @@ nav {
     cursor: default;
 }
 
+.newTodo i, .newTodo div {
+    pointer-events: none;
+}
+
 .newTodo:hover {
     background-color: #00b0e0;
+}
+
+/* New Todo Popup */
+.newTodoPopup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 30px;
+    height: 30vh;
+    width: 30vw;
+    background-color: aliceblue;
 }

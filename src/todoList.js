@@ -1,12 +1,10 @@
 import { populateStorage, getStorage } from './localStorage.js';
 import { createDomElement } from './tools.js';
-import Todo from './todoClass.js';
 import { createListFromJSON, createTodoFromDOM } from './todoJSON.js';
 import { getIcon } from './todoIcons.js';
+import { format } from 'date-fns';
 
 const userTodoList = (function() {
-    let myTodos = createListFromJSON(getStorage('default'));
-
     function createTodoItem(item) {
         let icon = getIcon('circle');
         let container = createDomElement('div', 'todo rounded');
@@ -14,7 +12,7 @@ const userTodoList = (function() {
         let top = createDomElement('div', 'todoTop');
         let bottom = createDomElement('div', 'todoBottom');
         top.appendChild(createDomElement('h2', 'todoTitle', item.title));
-        top.appendChild(createDomElement('p', 'todoDueDate', item.dueDate));
+        top.appendChild(createDomElement('p', 'todoDueDate', format(item.dueDate, 'P')));
         bottom.appendChild(createDomElement('p', 'todoDesc', item.description));
         content.appendChild(top);
         content.appendChild(bottom);
@@ -32,8 +30,8 @@ const userTodoList = (function() {
         return container;
     }
     
-    function renderTodos(list) {
-        list = createListFromJSON(getStorage(list));
+    function renderTodos(project) {
+        let list = createListFromJSON(getStorage(project));
         let container = createDomElement('div', 'todoList');
         if (list) {
             for (let item of list) {
@@ -48,12 +46,12 @@ const userTodoList = (function() {
         let todoItem = createTodoFromDOM(itemArray, project);
         let selectedProject = createListFromJSON(getStorage(project));
         selectedProject.push(todoItem);
-        populateStorage(selectedProject, project);
-        return renderTodos(myTodos);
+        populateStorage(project, selectedProject);
+        return renderTodos(project);
     }
 
     return {
-        addTodo: createNewTodo,
+        createNewTodo: createNewTodo,
         renderTodos: renderTodos,
     }
 })();

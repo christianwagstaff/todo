@@ -6,6 +6,8 @@ import { createDomElement, removeChildren } from './tools.js';
 import Header from './header.js';
 import todoProjects from './todoProjects.js';
 import eventDelegation from './eventDelegation.js';
+import {newTodoPopup} from './todoPopups.js';
+import { parseISO } from 'date-fns';
 
 // Add FontAwesome to head
 let script = document.createElement('script');
@@ -29,6 +31,7 @@ let myTodos = 'all';
 //create Todo App
 main.appendChild(todoProjects.createTodoNavBar());
 main.appendChild(createDomElement('div', 'todos'));
+// document.body.appendChild(newTodoPopup());
 
 //cache Todo App
 const navBar = document.querySelector('nav');
@@ -37,13 +40,14 @@ const addProject = navBar.querySelectorAll('.newUserProject');
 const userProjects = navBar.querySelector('.userProjects');
 const todoList = document.querySelector('.todos');
 
+//render initial todolist
+todoList.appendChild(userTodoList.renderTodos(myTodos));
+
 //add Event Listeners
 addProject.forEach(x => x.addEventListener('click', newUserProject));
 navProject.forEach(x => x.addEventListener('click', changeNav));
 userProjects.addEventListener('click', changeProject);
-
-//render initial todolist
-todoList.appendChild(userTodoList.renderTodos(myTodos));
+todoList.addEventListener('click', newTodo);
 
 function newUserProject() {
     let newProject = prompt('New Project');
@@ -81,4 +85,22 @@ function updateTodoList(project) {
 function updateProjectList() {
     let userProjectList = userProjects.querySelector('.userProjectList')
     userProjects.replaceChild(todoProjects.createUserProjectList(), userProjectList)
+}
+
+function newTodo(e) {
+    if (eventDelegation(e, 'DIV', 'newTodo')) {
+        let title = prompt('title');
+        let desc = prompt('desc');
+        let date = parseISO(new Date());
+        console.log(date);
+        let priority = 1;
+        let project;
+        if (userProjects.querySelector('.active')) {
+            project = userProjects.querySelector('.active').textContent
+        } else {
+            project = 'default'
+        }
+        let array = [title, desc, date, priority]
+        // console.log(userTodoList.createNewTodo(array, project));
+    }
 }

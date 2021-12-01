@@ -23,8 +23,19 @@ function createIcon(icon) {
     return container
 }
 
-function createFormInput() {
-
+function createFormInput(userType,name, placeholder) {
+    let input = document.createElement('input')
+    input.setAttribute('type', userType);
+    input.setAttribute('name', name);
+    input.setAttribute('placeholder', placeholder);
+    return input
 }
 
-export {createDomElement, removeChildren, createIcon, createFormInput};
+function createFormButton(userType, value) {
+    let input = document.createElement('input');
+    input.setAttribute('type', userType);
+    input.setAttribute('value', value);
+    return input;
+}
+
+export {createDomElement, removeChildren, createIcon, createFormInput, createFormButton};

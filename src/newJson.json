@@ -3,7 +3,7 @@
         {
             "title": "TODO 1",
             "description": "Description 1",
-            "dueDate": "02/23/21",
+            "dueDate": "2021-01-01",
             "priority": "1",
             "project": "default",
             "completed": "false"
@@ -11,7 +11,7 @@
         {
             "title": "TODO 2",
             "description": "Description 2",
-            "dueDate": "02/23/21",
+            "dueDate": "2021-01-01",
             "priority": "2",
             "project": "default",
             "completed": "false"
@@ -19,7 +19,7 @@
         {
             "title": "TODO 3",
             "description": "Description 3",
-            "dueDate": "02/23/21",
+            "dueDate": "2021-01-01",
             "priority": "3",
             "project": "default",
             "completed": "false"
@@ -30,7 +30,7 @@
         {
             "title": "TODO 11",
             "description": "Description 1",
-            "dueDate": "02/23/21",
+            "dueDate": "2021-01-01",
             "priority": "1",
             "project": "Project 1",
             "completed": "false"
@@ -38,7 +38,7 @@
         {
             "title": "TODO 21",
             "description": "Description 2",
-            "dueDate": "02/23/21",
+            "dueDate": "2021-01-01",
             "priority": "2",
             "project": "Project 1",
             "completed": "false"
@@ -46,7 +46,7 @@
         {
             "title": "TODO 31",
             "description": "Description 3",
-            "dueDate": "02/23/21",
+            "dueDate": "2021-01-01",
             "priority": "3",
             "project": "Project 1",
             "completed": "false"
