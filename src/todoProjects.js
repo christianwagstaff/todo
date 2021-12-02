@@ -67,11 +67,15 @@ let todoProjects = (function() {
         if (list) {
             for (let item of list) {
                 let project = createDomElement('button', `project userProject`, item);
-                let deleteDiv = createDomElement('div', 'deleteProject');
+                let iconDiv = createDomElement('div', 'changeProjects');
                 let deleteIcon = getIcon('trash')
+                let editIcon = getIcon('edit');
+                deleteIcon.classList.add('deleteProject')
+                editIcon.classList.add('editProject');
                 project.dataset.index = item;
-                deleteDiv.appendChild(deleteIcon);
-                project.appendChild(deleteDiv)
+                iconDiv.appendChild(deleteIcon);
+                iconDiv.appendChild(editIcon);
+                project.appendChild(iconDiv);
                 content.appendChild(project)
             }
         }

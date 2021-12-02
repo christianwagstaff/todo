@@ -2,7 +2,7 @@ require('./style-reset.css');
 require('./style.css');
 
 import {userTodoList} from './todoList.js';
-import { createDomElement, removeChildren } from './tools.js';
+import { createDomElement } from './tools.js';
 import Header from './header.js';
 import todoProjects from './todoProjects.js';
 import eventDelegation from './eventDelegation.js';
@@ -51,7 +51,7 @@ addProject.forEach(x => x.addEventListener('click', newUserProject));
 navProject.forEach(x => x.addEventListener('click', changeNav));
 userProjects.addEventListener('click', changeProject);
 userProjects.addEventListener('click', deleteProject);
-userProjects.addEventListener('dblclick', renameProject);
+userProjects.addEventListener('click', renameProject);
 todoList.addEventListener('click', newTodo);
 todoList.addEventListener('click', deleteTodo);
 todoList.addEventListener('click', completeTodo);
@@ -141,32 +141,35 @@ function newTodo(e) {
     }
 }
 
-function renderByActive(active) {
+function renderByNavHeader(active) {
     todoList.removeChild(todoList.firstChild)
     todoList.appendChild(userTodoList.renderTodosByDate(active));
 }
 
 function renderNav(e) {
     let index = e.target.dataset.index;
-    renderByActive(index)
+    renderByNavHeader(index)
 }
 
 function deleteProject(e) {
-    if (eventDelegation(e, 'DIV', 'deleteProject')) {
-        let parent = e.target.parentNode
+    if (eventDelegation(e, 'I', 'deleteProject')) {
+        let parent = e.target.closest('.userProject');
         let projectName = parent.textContent;
         if (confirm(`Are you sure you want to delete ${projectName} and all it's uncompleted tasks?`)) {
             deleteProjectFromStorage(projectName);
-            updateTodoList('all');
+            let active = navBar.querySelector('.active');
+            if (active === parent) {
+                renderByNavHeader('all');
+                changeActive('.homePageBtn')
+            }
             updateProjectList();
-            changeActive(homePageBtn)
         }
     }
 }
 
 function renameProject(e) {
-    if (eventDelegation(e, 'BUTTON', 'userProject')) {
-        let parent = e.target
+    if (eventDelegation(e, 'I', 'editProject')) {
+        let parent = e.target.closest('.userProject');
         let projectName = parent.textContent;
         let newName = prompt(`What do you want to rename ${projectName} to?`);
         if (newName === '' || !newName) return;
@@ -196,7 +199,7 @@ function deleteTodo(e) {
             if (active.classList.contains('userProject')) {
                 updateTodoList(active.dataset.index)
             } else if (active.classList.contains('navProject')) {
-                renderByActive(active.dataset.index);
+                renderByNavHeader(active.dataset.index);
             }
         }
     }
@@ -213,16 +216,21 @@ function completeTodo(e) {
         if (active.classList.contains('userProject')) {
             updateTodoList(active.dataset.index)
         } else if (active.classList.contains('navProject')) {
-            renderByActive(active.dataset.index);
+            renderByNavHeader(active.dataset.index);
         }
     }
 }
 
 function showUserPreferences() {
+    resetTodoToDefaults();
+}
+
+function resetTodoToDefaults() {
     if (confirm('Do you want to reset your Todo App?')) {
         if (confirm("There is no retrieving this data.")) {
             resetLocalStorage();
-            
+            renderByNavHeader('all');
+            changeActive('.homePageBtn')
         }
     }
 }

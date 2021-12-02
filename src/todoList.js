@@ -20,6 +20,8 @@ const userTodoList = (function() {
         completeIcon.classList.add('completeTodo');
         let deleteIcon = getIcon('trash')
         deleteIcon.classList.add('deleteTodo');
+        let editIcon = getIcon('edit');
+        editIcon.classList.add('editTodo');
         top.appendChild(createDomElement('h2', 'todoTitle', item.title));
         top.appendChild(createDomElement('p', 'todoDueDate', format(item.dueDate, 'P')));
         bottom.appendChild(createDomElement('p', 'todoDesc', item.description));
@@ -27,6 +29,7 @@ const userTodoList = (function() {
         content.appendChild(bottom);
         container.appendChild(completeIcon);
         container.appendChild(content);
+        container.appendChild(editIcon);
         container.appendChild(deleteIcon)
         //add Classes to container
         container.classList.add(`priority-${item.priority}`)

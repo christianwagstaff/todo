@@ -116,16 +116,18 @@ nav {
     justify-content: space-between;
 }
 
-.deleteProject {
+.changeProjects {
     display: none;
+    
 }
 
-.userProject:hover .deleteProject {
+.userProject:hover .changeProjects {
     display: flex;
+    flex-direction: row-reverse;
+    gap: 6px;
 }
 
-.deleteProject i {
-    pointer-events: none;
+.changeProjects i {
 }
 
 /* Todo List */

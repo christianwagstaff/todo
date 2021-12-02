@@ -1,4 +1,3 @@
-import { add } from 'date-fns';
 import data from './newJson.json';
 
 function populateStorage(choice, list) {
@@ -14,11 +13,12 @@ function checkStorage(choice) {
     return false;
 }
 
-function getStorage(choice) {
-    if (choice==='all') {
-        let projects = getProjects();
-        projects.unshift('default') //readd Default list to all projects
-        let list = []
+function getAllStorage(how) {
+    let list;
+    let projects = getProjects();
+    projects.unshift('default') //readd Default list to all projects
+    if (how === 'together') {
+        list = []
         for (let i of projects) {
             if (checkStorage(i)){
                 let item = JSON.parse(localStorage.getItem(i));
@@ -26,20 +26,25 @@ function getStorage(choice) {
                 list.push(...item);
             }
         }
-        return list
-    }
-    if (choice === 'allList') {
-        let projects = getProjects();
-        projects.unshift('default') //readd Default list to all projects
-        let list = {}
+    } else if (how === 'separate') {
+        list = {}
         for (let i of projects) {
             if (checkStorage(i)){
                 let item = JSON.parse(localStorage.getItem(i));
                 addIndex(item);
-                list[i] = item
+                list[i] = item;
             }
         }
-        return list
+    }
+    return list;
+}
+
+function getStorage(choice) {
+    if (choice==='all') {
+        return getAllStorage('together');
+    }
+    if (choice === 'allList') {
+        return getAllStorage('separate')
     }
     let item = localStorage.getItem(choice);
     if (!item) {
