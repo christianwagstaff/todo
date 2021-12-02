@@ -1,6 +1,5 @@
 import { add } from 'date-fns';
 import data from './newJson.json';
-let testing = false;
 
 function populateStorage(choice, list) {
     //if the list is empty do nothing
@@ -42,12 +41,6 @@ function getStorage(choice) {
         }
         return list
     }
-    if (testing) {
-        let projects = getProjects();
-        for (let i of projects) {
-            populateStorage(i, data[i]);
-        }
-    }
     let item = localStorage.getItem(choice);
     if (!item) {
         return;
@@ -57,6 +50,11 @@ function getStorage(choice) {
 
 function changeProjectName(newProjectName, oldProjectName) {
     if (oldProjectName === 'default' || oldProjectName === 'userPreferences') return;
+    //check if the newName already Exists
+    if (localStorage.getItem(newProjectName)) {
+        alert(`Cannot Complete Request: ${newProjectName} already exists!`);
+        return
+    };
     let info = getStorage(oldProjectName);
     populateStorage(newProjectName, info);
     localStorage.removeItem(oldProjectName);
@@ -102,4 +100,8 @@ function addIndex(list) {
     return list
 }
 
-export {populateStorage, getStorage, getProjects, addNewProject, changeProjectName, deleteProjectFromStorage};
+function resetLocalStorage() {
+    localStorage.clear();
+}
+
+export {populateStorage, getStorage, getProjects, addNewProject, changeProjectName, deleteProjectFromStorage, resetLocalStorage, checkStorage};

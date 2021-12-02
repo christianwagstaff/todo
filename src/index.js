@@ -7,7 +7,7 @@ import Header from './header.js';
 import todoProjects from './todoProjects.js';
 import eventDelegation from './eventDelegation.js';
 import {newTodoPopup} from './todoPopups.js';
-import { changeProjectName, deleteProjectFromStorage } from './localStorage.js';
+import { changeProjectName, checkStorage, deleteProjectFromStorage, resetLocalStorage } from './localStorage.js';
 
 // Add FontAwesome to head
 let script = document.createElement('script');
@@ -24,6 +24,7 @@ document.body.appendChild(content);
 
 //cache main
 const main = document.querySelector('.main');
+const userPreferences = document.querySelector('.userPreferences');
 
 //create Todo App
 main.appendChild(todoProjects.createTodoNavBar());
@@ -59,6 +60,7 @@ thisWeekBtn.addEventListener('click', renderNav);
 pastDueBtn.addEventListener('click', renderNav);
 completedBtn.addEventListener('click', renderNav);
 homePageBtn.addEventListener('click', renderNav);
+userPreferences.addEventListener('click', showUserPreferences);
 
 function newUserProject() {
     let newProject = prompt('New Project');
@@ -158,11 +160,14 @@ function renameProject(e) {
         let projectName = parent.textContent;
         let newName = prompt(`What do you want to rename ${projectName} to?`);
         if (newName === '' || !newName) return;
+        if (checkStorage(newName)) {
+            alert(`Cannot Complete Request: ${newName} already exists!`)
+            return;
+        }
         changeProjectName(newName, projectName)
-        updateTodoList('newName');
+        updateTodoList(newName);
         updateProjectList();
-        changeActive(newName)
-
+        changeActive(e)
     }
 }
 
@@ -196,6 +201,15 @@ function completeTodo(e) {
             updateTodoList(active.dataset.index)
         } else if (active.classList.contains('navProject')) {
             renderByActive(active.dataset.index);
+        }
+    }
+}
+
+function showUserPreferences() {
+    if (confirm('Do you want to reset your Todo App?')) {
+        if (confirm("There is no retrieving this data.")) {
+            resetLocalStorage();
+            changeActive(homePageBtn);
         }
     }
 }
