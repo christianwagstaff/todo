@@ -6,9 +6,10 @@ import { checkIfArrayContains, createDomElement } from './tools.js';
 import Header from './header.js';
 import todoProjects from './todoProjects.js';
 import eventDelegation from './eventDelegation.js';
-import {newTodoPopup} from './todoPopups.js';
+import {newTodoPopup, updateTodoPopup} from './todoPopups.js';
 import { changeProjectName, checkStorage, deleteProjectFromStorage, resetLocalStorage } from './localStorage.js';
-import { parseJSON } from 'date-fns';
+import { parse } from 'date-fns';
+import { createTodoForUpdate } from './todoJSON.js';
 
 // Add FontAwesome to head
 let script = document.createElement('script');
@@ -30,7 +31,8 @@ const userPreferences = document.querySelector('.userPreferences');
 //create Todo App
 main.appendChild(todoProjects.createTodoNavBar());
 main.appendChild(createDomElement('div', 'todos'));
-document.body.appendChild(newTodoPopup());
+document.body.appendChild(newTodoPopup()); //popupForm for creating new Todos
+document.body.appendChild(updateTodoPopup()); //popupForm for updating Todos
 
 //cache Todo App
 const navBar = document.querySelector('nav');
@@ -47,8 +49,12 @@ const completedBtn = navBar.querySelector('.completedBtn');
 //cache newTodoPopup
 const todoPopup = document.querySelector('.newTodoPopup');
 const popupNewForm = document.querySelector('.newTodoForm');
-const popupSubmit = document.getElementById('submitNew');
 const popupCancel = document.getElementById('cancelNew');
+
+//cache updateTodoPopup
+const updateTodoPopupContainer = document.querySelector('.updateTodoPopup');
+const popupUpdateForm = document.querySelector('.updateTodoForm');
+const cancelUpdateButton = document.getElementById('cancelUpdate');
 
 //render initial todolist
 todoList.appendChild(userTodoList.renderTodosByDate('all'));
@@ -59,7 +65,7 @@ navProject.forEach(x => x.addEventListener('click', changeNav));
 userProjects.addEventListener('click', changeProject);
 userProjects.addEventListener('click', deleteProject);
 userProjects.addEventListener('click', renameProject);
-todoList.addEventListener('click', showNewTodoPopup);
+todoList.addEventListener('click', showPopup);
 todoList.addEventListener('click', deleteTodo);
 todoList.addEventListener('click', completeTodo);
 todayBtn.addEventListener('click', renderNav);
@@ -70,6 +76,8 @@ homePageBtn.addEventListener('click', renderNav);
 userPreferences.addEventListener('click', showUserPreferences);
 popupNewForm.addEventListener('submit', newTodo);
 popupCancel.addEventListener('click', hideNewTodoPopup);
+popupUpdateForm.addEventListener('submit', updateTodo);
+cancelUpdateButton.addEventListener('click', hideUpdateTodoPopup);
 
 function newUserProject() {
     let newProject = prompt('New Project');
@@ -120,28 +128,73 @@ function updateProjectList() {
     userProjects.replaceChild(todoProjects.createUserProjectList(), userProjectList)
 }
 
-function showNewTodoPopup(e) {
+function showPopup(e) {
     if (eventDelegation(e, 'DIV', 'newTodo')) {
         todoPopup.style.display = 'flex'
+    } else if (eventDelegation(e, 'I', 'editTodo')) {
+        updateTodoPopupContainer.style.display = 'flex';
+        let info = (getDatsetForPopup(e))
+        popupUpdateForm.dataset.project = info[0]
+        popupUpdateForm.dataset.id = info[1]
+        popupUpdateForm.dataset.completed = info[2]
+        addInfoToUpdate(e);
     }
 }
 
+function addInfoToUpdate(e) {
+    let parent = e.target.closest('.todo');
+    let formElements = popupUpdateForm.elements;
+    formElements['updateTitle'].value = parent.querySelector('.todoTitle').textContent;
+    formElements['updateDescription'].value = parent.querySelector('.todoDesc').textContent;
+    formElements['updatePriority'].value = parent.dataset.priority;
+    formElements['updateDueDate'].value = parseDateForInput(parent.querySelector('.todoDueDate').textContent);
+}
+
+function parseDateForInput(date) {
+    let parsedDate = parse(date, 'MM/dd/yyyy', new Date())
+    let min_date = parsedDate.toISOString().slice(0,10);
+    return min_date;
+}
+
+function getDatsetForPopup(e) {
+    let parent = e.target.closest('.todo');
+    return [parent.dataset.project, parent.dataset.id, parent.dataset.completed]
+}
+
 function hideNewTodoPopup() {
-    clearForm()
+    clearForm('new');
     todoPopup.style.display = 'none'
 }
 
-function parseForm() {
-    let formElements = popupNewForm.elements;
-    let title = formElements['newTitle'].value;
-    let desc = formElements['newDescription'].value;
-    let dueDate = formElements['newDueDate'].value;
-    let priority = formElements['newPriority'].value;
+function hideUpdateTodoPopup() {
+    clearForm('update');
+    updateTodoPopupContainer.style.display = 'none';
+    delete popupUpdateForm.dataset.project;
+    delete popupUpdateForm.dataset.id;
+    delete popupUpdateForm.dataset.completed;
+}
+
+function parseForm(popup) {
+    let formElements;
+    if (popup === 'new') {
+        formElements = popupNewForm.elements;
+    } else if (popup === 'update') {
+        formElements = popupUpdateForm.elements;
+    }    
+    let title = formElements[`${popup}Title`].value;
+    let desc = formElements[`${popup}Description`].value;
+    let dueDate = formElements[`${popup}DueDate`].value;
+    let priority = formElements[`${popup}Priority`].value;
     return [title, desc, dueDate, priority];
 }
 
-function clearForm() {
-    let formElements = popupNewForm.elements;
+function clearForm(popup) {
+    let formElements;
+    if (popup === 'new') {
+        formElements = popupNewForm.elements;
+    } else if (popup === 'update') {
+        formElements = popupUpdateForm.elements;
+    }
     for (const e of formElements) {
         e.value = '';
     }
@@ -149,7 +202,7 @@ function clearForm() {
 
 function newTodo(e) {
     e.preventDefault();
-    let newTodoInfo = parseForm();
+    let newTodoInfo = parseForm('new');
     if (checkIfArrayContains(newTodoInfo, '')) {
         return;
     }
@@ -168,6 +221,18 @@ function newTodo(e) {
         updateTodoList(currentSelection);
     }
     hideNewTodoPopup() 
+}
+
+function updateTodo(e) {
+    e.preventDefault()
+    let todoInfo = parseForm('update');
+    let project = e.target.dataset.project;
+    let id = e.target.dataset.id;
+    let completed = e.target.dataset.completed;
+    let todo = createTodoForUpdate(todoInfo, project, completed)
+    userTodoList.updateTodo(project, id, todo);
+    hideUpdateTodoPopup();
+    renderByActive();
 }
 
 function renderByNavHeader(active) {
@@ -224,13 +289,17 @@ function deleteTodo(e) {
             let index = parent.dataset.id;
             let project = parent.dataset.project;
             userTodoList.deleteTodo(project,index);
-            let active = navBar.querySelector('.active');
-            if (active.classList.contains('userProject')) {
-                updateTodoList(active.dataset.index)
-            } else if (active.classList.contains('navProject')) {
-                renderByNavHeader(active.dataset.index);
-            }
+            renderByActive();
         }
+    }
+}
+
+function renderByActive() {
+    let active = navBar.querySelector('.active');
+    if (active.classList.contains('userProject')) {
+        updateTodoList(active.dataset.index)
+    } else if (active.classList.contains('navProject')) {
+        renderByNavHeader(active.dataset.index);
     }
 }
 

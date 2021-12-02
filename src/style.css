@@ -213,7 +213,7 @@ nav {
 }
 
 /* New Todo Popup */
-.newTodoPopup {
+.newTodoPopup, .updateTodoPopup {
     display: none;    
     position: absolute;
     top: 40%;
@@ -227,7 +227,7 @@ nav {
     padding: var(--nav-padding)
 }
 
-.newTodoForm {
+.newTodoForm, .updateTodoForm {
     display: flex;
     flex-grow: 1;
     flex-direction: column;

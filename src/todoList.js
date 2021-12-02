@@ -36,6 +36,7 @@ const userTodoList = (function() {
         //add data-attributes to container
         container.dataset.project = item.project;
         container.dataset.completed = item.completed;
+        container.dataset.priority = item.priority;
         return container;
     }
 
@@ -168,12 +169,27 @@ const userTodoList = (function() {
         populateStorage(project, list);
     }
 
+    function updateTodo(project, index, todo) {
+        let list = createListFromJSON(getStorage(project))
+        if (!list) {
+            console.error('Update Todo: Project not found');
+            return;
+        }
+        if (typeof list[index] === 'undefined') {
+            console.error('Update Todo: Index not in project');
+            return;
+        }
+        list.splice(index, 1, todo)
+        populateStorage(project, list);
+    }
+
     return {
         createNewTodo: createNewTodo,
         renderTodos: renderTodos,
         renderTodosByDate: renderTodosByDate,
         completeTodo: completeTodo,
         deleteTodo: deleteTodo,
+        updateTodo: updateTodo,
     }
 })();
 

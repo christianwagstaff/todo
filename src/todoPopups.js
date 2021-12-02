@@ -21,4 +21,25 @@ function newTodoPopup() {
     return popup
 }
 
-export {newTodoPopup};
+function updateTodoPopup() {
+    let popup = createDomElement('div', 'updateTodoPopup');
+    let form = createDomElement('form', 'updateTodoForm');
+    let title = createFormInput('text', 'updateTitle', 'Todo Title', 'Title');
+    let description = createFormInput('text', 'updateDescription', 'Description', 'Description');
+    let dueDate = createFormInput('date', 'updateDueDate', '', 'Due Date');
+    let priority = createFormInputDropdown('updatePriority', [['High', 3], ['Medium', 2], ['Low', 1]], 'Priority');
+    let submit = createFormButton('submit', 'Save Todo', 'submitUpdate');
+    let cancel = createFormButton('button', 'Cancel', 'cancelUpdate');
+    let buttonContainer = createDomElement('div', 'formButtons')
+    buttonContainer.appendChild(cancel);
+    buttonContainer.appendChild(submit);
+    form.appendChild(title);
+    form.appendChild(description);
+    form.appendChild(dueDate);
+    form.appendChild(priority);
+    form.appendChild(buttonContainer)
+    popup.appendChild(form);
+    return popup
+}
+
+export {newTodoPopup, updateTodoPopup};

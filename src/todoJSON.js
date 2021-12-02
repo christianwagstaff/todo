@@ -29,6 +29,17 @@ function createTodoFromDOM(array, project) {
     return todo;
 }
 
+function createTodoForUpdate(array, project, completed) {
+    let todo = new Todo(
+        array[0], //title
+        array[1], //descrition
+        array[2], //dueDate
+        array[3]); //priority
+    todo.project = project;
+    todo.completed = checkCompleted(completed);
+    return todo;
+}
+
 function createListFromJSON(data) {
     let todoList = [];
     if (data) {
@@ -39,4 +50,4 @@ function createListFromJSON(data) {
     return todoList;
 }
 
-export {createListFromJSON, createTodoFromDOM};
+export {createTodoForUpdate, createListFromJSON, createTodoFromDOM};
