@@ -93,6 +93,7 @@ function deleteProjectFromStorage(project) {
 }
 
 function addIndex(list) {
+    if (!list) return;
     let counter = 0;
     for (let item of list) {
         item.index = counter;

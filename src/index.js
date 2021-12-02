@@ -168,8 +168,19 @@ function renameProject(e) {
 
 function deleteTodo(e) {
     if (eventDelegation(e, 'I', 'deleteTodo')) {
-        let parent = e.target.closest('.todo')
-        alert(`Delete Todo ${parent.textContent}`)
+        let parent = e.target.closest('.todo');
+        let todo = parent.querySelector('.todoTitle').textContent;
+        if (confirm(`Are you sure you want to delete ${todo}?`)) {
+            let index = parent.dataset.id;
+            let project = parent.dataset.project;
+            userTodoList.deleteTodo(project,index);
+            let active = navBar.querySelector('.active');
+            if (active.classList.contains('userProject')) {
+                updateTodoList(active.dataset.index)
+            } else if (active.classList.contains('navProject')) {
+                renderByActive(active.dataset.index);
+            }
+        }
     }
 }
 
