@@ -5,6 +5,9 @@
     --clr-secondary: #D4F6FF;
     --clr-secondary-hover: #ffffff;
     --clr-new: #bdf1ff;
+    --clr-priority-high: red;
+    --clr-priority-regular: blue;
+    --clr-priority-low: green;
 }
 
 body {
@@ -140,10 +143,31 @@ nav {
     display: flex;
     align-items: flex-start;
     gap: var(--todo-gap);
-    border: 1px solid black;
+    border-top: 1px solid var(--clr-new);
     padding: 4px 8px;
     width: 100%;
     cursor: default;
+}
+
+.completed {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.completeTodo {
+    border-radius: 50%;
+}
+
+.priority-1 .completeTodo{
+    color: var(--clr-priority-high);
+}
+
+.priority-2 .completeTodo{
+    color: var(--clr-priority-regular);
+}
+
+.priority-3 .completeTodo{
+    color: var(--clr-priority-low);
 }
 
 .todo i {
@@ -169,7 +193,7 @@ nav {
 .newTodo {
     flex-direction: row;
     justify-content: flex-start;
-    background-color: var(--clr-new);
+    color: rgba(0,0,0,0.5);
     cursor: default;
 }
 
@@ -178,7 +202,7 @@ nav {
 }
 
 .newTodo:hover {
-    background-color: #00b0e0;
+    color: rgba(0,0,0,1)
 }
 
 /* New Todo Popup */

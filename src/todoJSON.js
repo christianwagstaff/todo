@@ -6,7 +6,8 @@ function createTodoFromJSON(jsonData) {
         jsonData.description, 
         jsonData.dueDate, 
         jsonData.priority);
-    todo.completed = (jsonData.completed === 'true');
+    todo.project = jsonData.project;
+    todo.completed = jsonData.completed;
     return todo;
 }
 
@@ -17,6 +18,7 @@ function createTodoFromDOM(array, project) {
         array[2],
         array[3]);
     todo.project = project;
+    todo.completed = false;
     return todo;
 }
 

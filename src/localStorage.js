@@ -1,10 +1,9 @@
 import data from './newJson.json';
-let testing = true;
+let testing = false;
 
 function populateStorage(choice, list) {
     //if the list is empty do nothing
     if (!list) return;
-    console.log('Saving Storage')
     localStorage.setItem(choice, JSON.stringify(list));
 }
 
@@ -18,6 +17,7 @@ function checkStorage(choice) {
 function getStorage(choice) {
     if (choice==='all') {
         let projects = getProjects();
+        projects.unshift('default') //readd Default list to all projects
         let list = []
         for (let i of projects) {
             if (checkStorage(i)){
@@ -27,12 +27,24 @@ function getStorage(choice) {
         }
         return list
     }
-    // if (testing) {
-    //     let projects = getProjects();
-    //     for (let i of projects) {
-    //         populateStorage(i, data[i]);
-    //     }
-    // }
+    if (choice === 'allList') {
+        let projects = getProjects();
+        projects.unshift('default') //readd Default list to all projects
+        let list = {}
+        for (let i of projects) {
+            if (checkStorage(i)){
+                let item = JSON.parse(localStorage.getItem(i));
+                list[i] = item
+            }
+        }
+        return list
+    }
+    if (testing) {
+        let projects = getProjects();
+        for (let i of projects) {
+            populateStorage(i, data[i]);
+        }
+    }
     let items = localStorage.getItem(choice);
     if (!items) {
         return;
@@ -41,6 +53,7 @@ function getStorage(choice) {
 }
 
 function changeProjectName(newProjectName, oldProjectName) {
+    if (oldProjectName === 'default' || oldProjectName === 'userPreferences') return;
     let info = getStorage(oldProjectName);
     populateStorage(newProjectName, info);
     localStorage.removeItem(oldProjectName);
@@ -54,8 +67,13 @@ function getProjects() {
                 populateStorage(i, data[i])
             }
         }
+
     }
-    return Object.keys(localStorage).reverse();
+    let keys =  Object.keys(localStorage).reverse();
+    keys = keys.filter(function(item) {
+        return item !== 'default'
+    })
+    return keys;
 }
 
 function addNewProject(project) {
@@ -66,4 +84,9 @@ function addNewProject(project) {
     localStorage.setItem(project, '[]');
 }
 
-export {populateStorage, getStorage, getProjects, addNewProject, changeProjectName};
+function deleteProjectFromStorage(project) {
+    if (project === 'default' || project === 'userPreferences') return;
+    localStorage.removeItem(project);
+}
+
+export {populateStorage, getStorage, getProjects, addNewProject, changeProjectName, deleteProjectFromStorage};

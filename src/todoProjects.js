@@ -20,10 +20,17 @@ let todoProjects = (function() {
     function createNavHeader() {
         let container = createDomElement('div', 'navHeader projectList')
         let homeBtn = createDomElement('button', 'project homePageBtn active navProject', 'Home');
+        let todayBtn = createDomElement('button', 'project todayBtn navProject', 'Today');
         let thisWeekBtn = createDomElement('button', 'project thisWeekBtn navProject', 'This Week');
         let pastDueBtn = createDomElement('button', 'project pastDueBtn navProject', 'Past Due');
         let completedBtn = createDomElement('button', 'project completedBtn navProject', 'Completed');
+        homeBtn.dataset.index = 'all';
+        todayBtn.dataset.index = 'today';
+        thisWeekBtn.dataset.index = 'thisWeek';
+        pastDueBtn.dataset.index = 'pastDue';
+        completedBtn.dataset.index = 'completed';
         container.appendChild(homeBtn);
+        container.appendChild(todayBtn);
         container.appendChild(thisWeekBtn);
         container.appendChild(pastDueBtn);
         container.appendChild(completedBtn);
@@ -62,6 +69,7 @@ let todoProjects = (function() {
                 let project = createDomElement('button', `project userProject`, item);
                 let deleteDiv = createDomElement('div', 'deleteProject');
                 let deleteIcon = getIcon('trash')
+                project.dataset.index = item;
                 deleteDiv.appendChild(deleteIcon);
                 project.appendChild(deleteDiv)
                 content.appendChild(project)

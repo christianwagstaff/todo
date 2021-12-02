@@ -6,8 +6,6 @@ class Todo {
         this.description = description, 
         this.dueDate = parseISO(dueDate) ? parseISO(dueDate) : dueDate,
         this.priority = priority
-        this.project = 'default';
-        this.completed = false;
     }
 
     changeTitle(newTitle) {
