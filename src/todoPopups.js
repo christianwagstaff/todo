@@ -6,7 +6,7 @@ function newTodoPopup() {
     let title = createFormInput('text', 'newTitle', 'Todo Title', 'Title');
     let description = createFormInput('text', 'newDescription', 'Description', 'Description');
     let dueDate = createFormInput('date', 'newDueDate', '', 'Due Date');
-    let priority = createFormInputDropdown('newPriority', [['High', 3], ['Medium', 2], ['Low', 1]], 'Priority');
+    let priority = createFormInputDropdown('newPriority', [['High', 1], ['Medium', 2], ['Low', 3]], 'Priority');
     let submit = createFormButton('submit', 'Save Todo', 'submitNew');
     let cancel = createFormButton('button', 'Cancel', 'cancelNew');
     let buttonContainer = createDomElement('div', 'formButtons')
@@ -27,7 +27,7 @@ function updateTodoPopup() {
     let title = createFormInput('text', 'updateTitle', 'Todo Title', 'Title');
     let description = createFormInput('text', 'updateDescription', 'Description', 'Description');
     let dueDate = createFormInput('date', 'updateDueDate', '', 'Due Date');
-    let priority = createFormInputDropdown('updatePriority', [['High', 3], ['Medium', 2], ['Low', 1]], 'Priority');
+    let priority = createFormInputDropdown('updatePriority', [['High', 1], ['Medium', 2], ['Low', 3]], 'Priority');
     let submit = createFormButton('submit', 'Save Todo', 'submitUpdate');
     let cancel = createFormButton('button', 'Cancel', 'cancelUpdate');
     let buttonContainer = createDomElement('div', 'formButtons')
