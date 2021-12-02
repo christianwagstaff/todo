@@ -57,14 +57,10 @@ const userTodoList = (function() {
 
     function createTodoItemWithIndex(container, list) {
         if (list) {
-            let counter = {};
             for (let item of list) {
-                if (!counter[item.project]) {counter[item.project] = 0}
-                let index = counter[item.project]
                 let itemDiv = createTodoItem(item)
-                itemDiv.dataset.id = index
+                itemDiv.dataset.id = item.index
                 container.appendChild(itemDiv);
-                counter[item.project]++;
             }
         }
     }
@@ -84,36 +80,43 @@ const userTodoList = (function() {
         let fullList = createListFromJSON(getStorage('all'))
         let partialList = [];
         let container = createDomElement('div', 'todoList');
-        container.appendChild(createTodoTitle(timeFrame))
+        let title;
         if (fullList) {
             for (let item of fullList) {
                 if (timeFrame === 'thisWeek') {
+                    title = 'This Week';
                     if (isSameWeek(new Date(), item.dueDate)) {
                         partialList.push(item);
                     }
                 } else if (timeFrame === 'today') {
+                    title = 'Today';
                     if (isToday(item.dueDate)) {
                         partialList.push(item);
                     }
                 } else if (timeFrame === 'pastDue') {
+                    title = 'Past Due';
                     if (isAfter(new Date(), item.dueDate)) {
                         partialList.push(item);
                     }
                 } else if (timeFrame === 'completed') {
+                    title = 'Completed';
                     if (item.completed) {
                         partialList.push(item);
                     }
                 } else if (timeFrame === 'all') {
+                    title = 'Home'
                     partialList.push(item);
                 }
             }
             if (partialList.length === 0) {
+                container.appendChild(createTodoTitle('Completed'))
                 container.appendChild(createDomElement('div', 'todo rounded', 'Nothing to see here!'));
                 return container;
             }
         }
+        container.appendChild(createTodoTitle(title))
         createTodoItemWithIndex(container, partialList);
-        container.appendChild(newTodoButton());
+        if (timeFrame !== 'completed') {container.appendChild(newTodoButton());}
         return container;
     }
 

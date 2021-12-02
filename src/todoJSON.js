@@ -8,6 +8,7 @@ function createTodoFromJSON(jsonData) {
         jsonData.priority);
     todo.project = jsonData.project;
     todo.completed = jsonData.completed;
+    todo.index = jsonData.index;
     return todo;
 }
 

@@ -1,3 +1,4 @@
+import { add } from 'date-fns';
 import data from './newJson.json';
 let testing = false;
 
@@ -22,6 +23,7 @@ function getStorage(choice) {
         for (let i of projects) {
             if (checkStorage(i)){
                 let item = JSON.parse(localStorage.getItem(i));
+                addIndex(item);
                 list.push(...item);
             }
         }
@@ -34,6 +36,7 @@ function getStorage(choice) {
         for (let i of projects) {
             if (checkStorage(i)){
                 let item = JSON.parse(localStorage.getItem(i));
+                addIndex(item);
                 list[i] = item
             }
         }
@@ -45,11 +48,11 @@ function getStorage(choice) {
             populateStorage(i, data[i]);
         }
     }
-    let items = localStorage.getItem(choice);
-    if (!items) {
+    let item = localStorage.getItem(choice);
+    if (!item) {
         return;
     }
-    return JSON.parse(items)
+    return addIndex(JSON.parse(item))
 }
 
 function changeProjectName(newProjectName, oldProjectName) {
@@ -87,6 +90,15 @@ function addNewProject(project) {
 function deleteProjectFromStorage(project) {
     if (project === 'default' || project === 'userPreferences') return;
     localStorage.removeItem(project);
+}
+
+function addIndex(list) {
+    let counter = 0;
+    for (let item of list) {
+        item.index = counter;
+        counter++;
+    }
+    return list
 }
 
 export {populateStorage, getStorage, getProjects, addNewProject, changeProjectName, deleteProjectFromStorage};

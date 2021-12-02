@@ -43,7 +43,7 @@ const pastDueBtn = navBar.querySelector('.pastDueBtn');
 const completedBtn = navBar.querySelector('.completedBtn');
 
 //render initial todolist
-todoList.appendChild(userTodoList.renderTodos('all'));
+todoList.appendChild(userTodoList.renderTodosByDate('all'));
 
 //add Event Listeners
 addProject.forEach(x => x.addEventListener('click', newUserProject));
@@ -58,6 +58,7 @@ todayBtn.addEventListener('click', renderNav);
 thisWeekBtn.addEventListener('click', renderNav);
 pastDueBtn.addEventListener('click', renderNav);
 completedBtn.addEventListener('click', renderNav);
+homePageBtn.addEventListener('click', renderNav);
 
 function newUserProject() {
     let newProject = prompt('New Project');
@@ -79,9 +80,6 @@ function changeProject(e) {
 
 function changeNav(e) {
     changeActive(e);
-    if (e.target.textContent === 'Home') {
-        updateTodoList('all')
-    }
 }
 
 function changeActive(e) {
