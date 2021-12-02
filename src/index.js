@@ -84,11 +84,21 @@ function changeNav(e) {
     changeActive(e);
 }
 
-function changeActive(e) {
+function removeActive() {
     let userProject = userProjects.querySelectorAll('.userProject');
     userProject.forEach(x => x.classList.remove('active'));
     navProject.forEach(x => x.classList.remove('active'));
-    e.target.classList.add('active')
+}
+
+function changeActive(e) {
+    removeActive();
+    if (e.target) {
+        //if e is a mouse event, add class to that event
+        e.target.classList.add('active')
+    } else {
+        let active = document.querySelector(e);
+        active.classList.add('active');
+    }
 }
 
 function updateTodoList(project) {
@@ -167,7 +177,10 @@ function renameProject(e) {
         changeProjectName(newName, projectName)
         updateTodoList(newName);
         updateProjectList();
-        changeActive(e)
+        let selector = `[data-index="${newName}"]`;
+        let active = document.querySelector(selector);
+        removeActive()
+        active.classList.add('active');
     }
 }
 
@@ -209,7 +222,7 @@ function showUserPreferences() {
     if (confirm('Do you want to reset your Todo App?')) {
         if (confirm("There is no retrieving this data.")) {
             resetLocalStorage();
-            changeActive(homePageBtn);
+            
         }
     }
 }

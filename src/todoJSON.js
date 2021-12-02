@@ -7,9 +7,15 @@ function createTodoFromJSON(jsonData) {
         jsonData.dueDate, 
         jsonData.priority);
     todo.project = jsonData.project;
-    todo.completed = jsonData.completed;
+    todo.completed = checkCompleted(jsonData.completed);
     todo.index = jsonData.index;
     return todo;
+}
+
+function checkCompleted(data) {
+    if (typeof data === 'string' || data instanceof String) {
+        return data === 'true';
+    } return data
 }
 
 function createTodoFromDOM(array, project) {
