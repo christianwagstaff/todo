@@ -2,12 +2,13 @@ require('./style-reset.css');
 require('./style.css');
 
 import {userTodoList} from './todoList.js';
-import { createDomElement } from './tools.js';
+import { checkIfArrayContains, createDomElement } from './tools.js';
 import Header from './header.js';
 import todoProjects from './todoProjects.js';
 import eventDelegation from './eventDelegation.js';
 import {newTodoPopup} from './todoPopups.js';
 import { changeProjectName, checkStorage, deleteProjectFromStorage, resetLocalStorage } from './localStorage.js';
+import { parseJSON } from 'date-fns';
 
 // Add FontAwesome to head
 let script = document.createElement('script');
@@ -29,7 +30,7 @@ const userPreferences = document.querySelector('.userPreferences');
 //create Todo App
 main.appendChild(todoProjects.createTodoNavBar());
 main.appendChild(createDomElement('div', 'todos'));
-// document.body.appendChild(newTodoPopup());
+document.body.appendChild(newTodoPopup());
 
 //cache Todo App
 const navBar = document.querySelector('nav');
@@ -43,6 +44,12 @@ const thisWeekBtn = navBar.querySelector('.thisWeekBtn');
 const pastDueBtn = navBar.querySelector('.pastDueBtn');
 const completedBtn = navBar.querySelector('.completedBtn');
 
+//cache newTodoPopup
+const todoPopup = document.querySelector('.newTodoPopup');
+const popupNewForm = document.querySelector('.newTodoForm');
+const popupSubmit = document.getElementById('submitNew');
+const popupCancel = document.getElementById('cancelNew');
+
 //render initial todolist
 todoList.appendChild(userTodoList.renderTodosByDate('all'));
 
@@ -52,7 +59,7 @@ navProject.forEach(x => x.addEventListener('click', changeNav));
 userProjects.addEventListener('click', changeProject);
 userProjects.addEventListener('click', deleteProject);
 userProjects.addEventListener('click', renameProject);
-todoList.addEventListener('click', newTodo);
+todoList.addEventListener('click', showNewTodoPopup);
 todoList.addEventListener('click', deleteTodo);
 todoList.addEventListener('click', completeTodo);
 todayBtn.addEventListener('click', renderNav);
@@ -61,6 +68,8 @@ pastDueBtn.addEventListener('click', renderNav);
 completedBtn.addEventListener('click', renderNav);
 homePageBtn.addEventListener('click', renderNav);
 userPreferences.addEventListener('click', showUserPreferences);
+popupNewForm.addEventListener('submit', newTodo);
+popupCancel.addEventListener('click', hideNewTodoPopup);
 
 function newUserProject() {
     let newProject = prompt('New Project');
@@ -111,34 +120,54 @@ function updateProjectList() {
     userProjects.replaceChild(todoProjects.createUserProjectList(), userProjectList)
 }
 
-function newTodo(e) {
+function showNewTodoPopup(e) {
     if (eventDelegation(e, 'DIV', 'newTodo')) {
-        let title = prompt('Todo Title');
-        if (title === '' || !title) {
-            return;
-        }
-        let desc = prompt('Todo Description');
-        if (desc === '' || !desc) {
-            return;
-        }
-        let date = '2021-12-04';
-        let priority = 1;
-        let project;
-        if (userProjects.querySelector('.active')) {
-            project = userProjects.querySelector('.active').textContent
-        } else {
-            project = 'default'
-        }
-        let array = [title, desc, date, priority]
-        userTodoList.createNewTodo(array, project);
-        let currentSelection = navBar.querySelector('.active').textContent
-        console.log(currentSelection);
-        if (currentSelection === 'Home') {
-            updateTodoList('all');
-        } else {
-            updateTodoList(currentSelection);
-        }
+        todoPopup.style.display = 'flex'
     }
+}
+
+function hideNewTodoPopup() {
+    clearForm()
+    todoPopup.style.display = 'none'
+}
+
+function parseForm() {
+    let formElements = popupNewForm.elements;
+    let title = formElements['newTitle'].value;
+    let desc = formElements['newDescription'].value;
+    let dueDate = formElements['newDueDate'].value;
+    let priority = formElements['newPriority'].value;
+    return [title, desc, dueDate, priority];
+}
+
+function clearForm() {
+    let formElements = popupNewForm.elements;
+    for (const e of formElements) {
+        e.value = '';
+    }
+}
+
+function newTodo(e) {
+    e.preventDefault();
+    let newTodoInfo = parseForm();
+    if (checkIfArrayContains(newTodoInfo, '')) {
+        return;
+    }
+    let project;
+    if (userProjects.querySelector('.active')) {
+        project = userProjects.querySelector('.active').textContent
+    } else {
+        project = 'default'
+    }
+    userTodoList.createNewTodo(newTodoInfo, project);
+    let currentSelection = navBar.querySelector('.active').dataset.index
+    console.log(currentSelection);
+    if (['all', 'today', 'pastDue', 'thisWeek'].includes(currentSelection)) {
+        renderByNavHeader(currentSelection);
+    } else {
+        updateTodoList(currentSelection);
+    }
+    hideNewTodoPopup() 
 }
 
 function renderByNavHeader(active) {

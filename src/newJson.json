@@ -1,4 +1,7 @@
 {
+    "userPreferences" : {
+        "hideComplete": "false"
+    },
     "default" : [
         {
             "title": "TODO 1",

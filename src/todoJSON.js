@@ -20,10 +20,10 @@ function checkCompleted(data) {
 
 function createTodoFromDOM(array, project) {
     let todo = new Todo(
-        array[0],
-        array[1],
-        array[2],
-        array[3]);
+        array[0], //title
+        array[1], //descrition
+        array[2], //dueDate
+        array[3]); //priority
     todo.project = project;
     todo.completed = false;
     return todo;

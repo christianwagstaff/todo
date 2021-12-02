@@ -6,6 +6,10 @@ function populateStorage(choice, list) {
     localStorage.setItem(choice, JSON.stringify(list));
 }
 
+function getUserPreferences() {
+    return JSON.parse(localStorage.getItem('userPreferences'))
+}
+
 function checkStorage(choice) {
     if (localStorage.getItem(choice)) {
         return true;
@@ -67,7 +71,7 @@ function changeProjectName(newProjectName, oldProjectName) {
 
 function getProjects() {
     let defaultKeys = Object.keys(data)
-    if (!localStorage[defaultKeys[0]]) {
+    if (!localStorage[defaultKeys[1]]) {
         for (let i of defaultKeys) {
             if (i !== 'userPreferences') {
                 populateStorage(i, data[i])

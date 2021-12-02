@@ -23,7 +23,7 @@ const userTodoList = (function() {
         let editIcon = getIcon('edit');
         editIcon.classList.add('editTodo');
         top.appendChild(createDomElement('h2', 'todoTitle', item.title));
-        top.appendChild(createDomElement('p', 'todoDueDate', format(item.dueDate, 'P')));
+        top.appendChild(createDomElement('p', 'todoDueDate', item.dueDate));
         bottom.appendChild(createDomElement('p', 'todoDesc', item.description));
         content.appendChild(top);
         content.appendChild(bottom);
@@ -50,6 +50,9 @@ const userTodoList = (function() {
 
     function renderTodos(project) {
         let list = createListFromJSON(getStorage(project));
+        for (let item of list) {
+            item.dueDate = format(item.dueDate, 'P');
+        }
         let title = createTodoTitle(project);
         let container = createDomElement('div', 'todoList');
         container.appendChild(title)
@@ -69,7 +72,7 @@ const userTodoList = (function() {
     }
     
     function createTodoTitle(projectName) {
-        return createDomElement('h2', 'todoTitle', projectName)
+        return createDomElement('h2', 'todoListTitle', projectName)
     }
     
     function createNewTodo(itemArray, project) {
@@ -116,6 +119,9 @@ const userTodoList = (function() {
                 container.appendChild(createDomElement('div', 'todo rounded', 'Nothing to see here!'));
                 return container;
             }
+        }
+        for (let item of partialList) {
+            item.dueDate = format(item.dueDate, 'P');
         }
         container.appendChild(createTodoTitle(title))
         createTodoItemWithIndex(container, partialList);
