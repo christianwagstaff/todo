@@ -56,17 +56,26 @@ const userTodoList = (function() {
         let title = createTodoTitle(project);
         let container = createDomElement('div', 'todoList');
         container.appendChild(title)
-        createTodoItemWithIndex(container,list)
+        createTodoItemWithIndex(container,list, false)
         container.appendChild(newTodoButton());
         return container;
     }
 
-    function createTodoItemWithIndex(container, list) {
+    function createTodoItemWithIndex(container, list, completed=true) {
         if (list) {
             for (let item of list) {
-                let itemDiv = createTodoItem(item)
-                itemDiv.dataset.id = item.index
-                container.appendChild(itemDiv);
+                if (completed) {
+                    let itemDiv = createTodoItem(item)
+                    itemDiv.dataset.id = item.index
+                    container.appendChild(itemDiv);
+                } else {
+                    console.log(item.completed)
+                    if (!item.completed) {
+                        let itemDiv = createTodoItem(item)
+                        itemDiv.dataset.id = item.index
+                        container.appendChild(itemDiv);
+                    }
+                }
             }
         }
     }
@@ -89,17 +98,18 @@ const userTodoList = (function() {
         let title;
         if (fullList) {
             for (let item of fullList) {
-                if (timeFrame === 'thisWeek') {
+                let isCompleted = item.completed;
+                if (timeFrame === 'thisWeek' && !isCompleted) {
                     title = 'This Week';
                     if (isSameWeek(new Date(), item.dueDate)) {
                         partialList.push(item);
                     }
-                } else if (timeFrame === 'today') {
+                } else if (timeFrame === 'today' && !isCompleted) {
                     title = 'Today';
                     if (isToday(item.dueDate)) {
                         partialList.push(item);
                     }
-                } else if (timeFrame === 'pastDue') {
+                } else if (timeFrame === 'pastDue' && !isCompleted) {
                     title = 'Past Due';
                     if (isAfter(new Date(), item.dueDate)) {
                         partialList.push(item);
@@ -109,13 +119,13 @@ const userTodoList = (function() {
                     if (item.completed) {
                         partialList.push(item);
                     }
-                } else if (timeFrame === 'all') {
+                } else if (timeFrame === 'all' && !isCompleted) {
                     title = 'Home'
                     partialList.push(item);
                 }
             }
-            if (partialList.length === 0) {
-                container.appendChild(createTodoTitle('Completed'))
+            if (partialList.length === 0 && timeFrame === 'completed') {
+                container.appendChild(createTodoTitle('Completed'));
                 container.appendChild(createDomElement('div', 'todo rounded', 'Nothing to see here!'));
                 return container;
             }

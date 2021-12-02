@@ -184,7 +184,7 @@ function deleteProject(e) {
     if (eventDelegation(e, 'I', 'deleteProject')) {
         let parent = e.target.closest('.userProject');
         let projectName = parent.textContent;
-        if (confirm(`Are you sure you want to delete ${projectName} and all it's uncompleted tasks?`)) {
+        if (confirm(`Are you sure you want to delete ${projectName} and all it's tasks?`)) {
             deleteProjectFromStorage(projectName);
             let active = navBar.querySelector('.active');
             if (active === parent) {
