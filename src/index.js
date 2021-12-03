@@ -328,6 +328,7 @@ function resetTodoToDefaults() {
         if (confirm("There is no retrieving this data.")) {
             resetLocalStorage();
             renderByNavHeader('all');
+            updateProjectList();
             changeActive('.homePageBtn')
         }
     }
